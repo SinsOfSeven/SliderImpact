@@ -5,27 +5,32 @@
 [Menu Shader](#menu-shader)
 
 ## Shape Keys Shader
-Use Example
+
 ```ini
+;Example
+[ResourcePosition]
+[ResourcePosition.Base]
+filename = 
+[ResourcePosition.1]
+filename = 
+[Constants]
+global persist $Key = 0
+post ResourcePosition = copy_desc ResourcePosition.Base
+post run = CommandListComputeShapeKeys
+
 [CommandListComputeShapeKeys]
 Resource\Shape\Key = copy ResourcePosition.Base
-; 1st Key
 cs-t50 = copy ResourcePosition.Base
 cs-t51 = copy ResourcePosition.1
-x88 = $Key1
-$\Shape\KeyBatch = 58742
-run = CustomShader\Shape\Keys
-; 2nd Key
-cs-t50 = copy ResourcePosition.Base
-cs-t51 = copy ResourcePosition.2
-x88 = $Key2
-$\Shape\KeyBatch = 58742
+x88 = $Key
+;number of verts in pos.
+$\Shape\KeyBatch = 0
 run = CustomShader\Shape\Keys
 ```
 
 ## Menu Shader
-Use Example
 ```ini
+;Example
 [CommandListCursors.2]
 ;NORMALIZE VAR
 local $v = (($Key2+1)/2)
