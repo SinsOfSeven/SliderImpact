@@ -40,12 +40,12 @@ y5 = $bar_y
 z5 = $v*$bar_x+$bar_xo-($bar_y*res_height/res_width)/2
 w5 = $bar2_yo
 ps-t100 = ResourceCursor2
-run = CustomShaderMenu\Element
+run = CustomShader\Menu\Element
 ;DRAW ICON
 x5 = $icon_size
 y5 = $icon_size*res_width/res_height
 z5 = $bar_xo-$icon_size
 w5 = $bar2_yo
 ps-t100 = ResourceSliderIcon2
-run = CustomShaderMenu\Element
+run = CustomShader\Menu\Element
 ```
