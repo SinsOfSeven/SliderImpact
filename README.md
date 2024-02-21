@@ -35,17 +35,22 @@ run = CustomShader\Shape\Keys
 ;NORMALIZE VAR
 local $v = (($Key2+1)/2)
 ;DRAW CURSOR
-x5 = $bar_y*res_height/res_width
-y5 = $bar_y
-z5 = $v*$bar_x+$bar_xo-($bar_y*res_height/res_width)/2
-w5 = $bar2_yo
+x87 = $bar_y*res_height/res_width
+y87 = $bar_y
+z87 = $v*$bar_x+$bar_xo-($bar_y*res_height/res_width)/2
+w87 = $bar2_yo
 ps-t100 = ResourceCursor2
 run = CustomShader\Menu\Element
 ;DRAW ICON
-x5 = $icon_size
-y5 = $icon_size*res_width/res_height
-z5 = $bar_xo-$icon_size
-w5 = $bar2_yo
+x87 = $icon_size
+y87 = $icon_size*res_width/res_height
+z87 = $bar_xo-$icon_size
+w87 = $bar2_yo
 ps-t100 = ResourceSliderIcon2
 run = CustomShader\Menu\Element
+```
+
+## Fake Lightmap
+```ini
+Resource\Lightmap\Fake
 ```
