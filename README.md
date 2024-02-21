@@ -4,6 +4,8 @@
 
 [Menu Shader](#menu-shader)
 
+[Virtual Textures](#fake-lightmap)
+
 ## Shape Keys Shader
 
 ```ini
@@ -50,7 +52,7 @@ ps-t100 = ResourceSliderIcon2
 run = CustomShader\Menu\Element
 ```
 
-## Fake Lightmap
+## Vir Tex
 ```ini
-Resource\Lightmap\Fake
+Resource\VirTex\Lightmap
 ```
