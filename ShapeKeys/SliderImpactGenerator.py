@@ -362,7 +362,7 @@ x87 = 0.001
 y87 = $size_y
 z87 = $off_x-$icon_size
 w87 = $off_y
-run = CustomShaderSliderMenu}''' if not ns else ''])}
+run = CustomShaderSliderMenu''' if not ns else ''])}
 
 [CommandListBars]
 x87 = $size_x
