@@ -70,10 +70,27 @@ def main():
 
     # Define the folder path
     folder_path = os.getcwd()
-
+    file_list = []
+    charaname =''
     # Get Character's Name from Ini's File Name
-    file = glob.glob('*.ini')[0]
-    charaname = file[:-4]
+    try:
+        for file in os.listdir(folder_path):
+            if file.lower().startswith('disabled'):
+                pass
+            elif file.endswith('.ini'):
+                file_list.append(file)
+        if len(file_list) == 0:
+            print('No enabled mod')
+            return
+        elif len(file_list) == 1:
+            file = file_list[0]
+        else:
+            print('Multiple enabled mods')
+            return
+        charaname = file[:-4]
+        print('character: '+charaname)
+    except FileExistsError:
+        print('No enabled mod')
 
     # Iterate over the files in the folder
     baseposition = [filename for filename in os.listdir(folder_path) if "base" in filename.lower() 
