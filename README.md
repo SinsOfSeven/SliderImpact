@@ -8,6 +8,8 @@
 
 ## Shape Keys Shader
 
+[GameBanana Link](https://gamebanana.com/tools/16466)
+
 ```ini
 ;Example
 [ResourcePosition]
