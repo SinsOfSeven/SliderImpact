@@ -285,10 +285,10 @@ filename = resources/border.dds
 {''.join([ 
 (f'''[ResourceSliderIcon{i+1}]
 filename = resources/Icon{i+1}.dds
-'''if not ns else '')+(
-f'''[ResourceSliderText{i+1}]
+'''if not ns else '')+(f'''[ResourceSliderText{i+1}]
 filename = resources/textResource{i+1}.dds
-''' if text else '')for i in range(numberoffiles)
+''' if text else '')
+for i in range(numberoffiles)
 ])}
 [CustomShaderSliderMenu]
 vs = resources/UIElement.hlsl
@@ -380,9 +380,9 @@ run = CustomShaderSliderMenu
 ps-t100 = ResourceBarsSmallUI
 x87 = 0.0015
 y87 = $bar
-{''.join([f'''z87 = $off_x+($size_x/10)*{i}-(x87/2)
+{''.join([f'z87 = $off_x+($size_x/10)*{i}-(x87/2)
 run = CustomShaderSliderMenu
-'''for i in range(1,10)])}
+'for i in range(1,10)])}
 ''' if metric else ''])}
 
 {''.join([
