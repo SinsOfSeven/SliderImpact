@@ -417,12 +417,11 @@ x87 = $bar*res_height/res_width
 y87 = $bar
 z87 = $v*$size_x+$off_x-($bar*res_height/res_width)/2
 w87 = $bar{i+1}_yo * $size_y + $off_y
-if $slider_id == {i+1}
+if $slider_id == {i+1} || $selector == {i+1}
     ps-t100 = ResourceSliderUIOn
 else
     ps-t100 = ResourceSliderUI
 endif
-$slider_id = 0
 run = CustomShaderSliderMenu
 '''
 +(f''';DRAW ICON
@@ -487,6 +486,7 @@ f'''    run = CommandListSlider{i+1}
 ''' for i in range(numberoffiles)
 ])}
 endif
+$slider_id = 0
 ;###MENU CODE END
 """)
         
