@@ -49,6 +49,7 @@ def main():
     parser.add_argument("-a", "--author", action="store_true", help="Generate text file for author")
     parser.add_argument("-o", "--order", action="store_true", help="Custom Order for Sliders (1 0 2)")
     parser.add_argument("-ns", "--noside", action="store_true", help="Disables sidebar")
+    parser.add_argument("-nb", "--noborder", action="store_true", help="Disables boader")
     parser.add_argument("-cm","--metric", action="store_true", help="Adds red measurement lines")
 
     args = parser.parse_args()
@@ -64,7 +65,8 @@ def main():
     text=args.text
     title = args.title
     author = args.author
-    ns = args.noside
+    noside = args.noside
+    noborder = args.noborder
     metric = args.metric
 
 
@@ -303,12 +305,13 @@ filename = resources/textResourceTitle.dds''' if title else ''])}
 filename = resources/textResourceAuthor.dds''' if author else ''])}
 [ResourceBackgroundUI]
 filename = resources/background.dds
-[ResourceBorderUI]
-filename = resources/border.dds
+
 {''.join([ 
+('''[ResourceBorderUI]
+filename = resources/border.dds'''if not noborder else '')+
 (f'''[ResourceSliderIcon{i+1}]
 filename = resources/Icon{i+1}.dds
-'''if not ns else '')+(f'''[ResourceSliderText{i+1}]
+'''if not noside else '')+(f'''[ResourceSliderText{i+1}]
 filename = resources/textResource{i+1}.dds
 ''' if text else '')
 for i in range(numberoffiles)])}
@@ -337,14 +340,14 @@ ps-t100 = ResourceSlidersTitle
 run = CustomShaderSliderMenu
 '''
 if title else ''])}{''.join([
-'''x87 = $text_x
+('''x87 = $text_x
 y87 = $text_y
 z87 = $off_x+$size_x-$text_x
 w87 = $off_y+$size_y-$text_y
 ps-t100 = ResourceSlidersAuthor
 run = CustomShaderSliderMenu
 '''
-if author else ''])}
+if author else '')+('''
 ps-t100 = ResourceBorderUI
 x87 = 0.001
 y87 = $size_y
@@ -365,7 +368,9 @@ x87 = $size_x
 y87 = 0.002
 z87 = $off_x
 w87 = $off_y+$size_y
-run = CustomShaderSliderMenu
+run = CustomShaderSliderMenu''' if noborder else '')
+])}
+
 
 {''.join([
 '''x87 = $icon_size
@@ -389,7 +394,7 @@ x87 = 0.001
 y87 = $size_y
 z87 = $off_x-$icon_size
 w87 = $off_y
-run = CustomShaderSliderMenu''' if not ns else ''])}
+run = CustomShaderSliderMenu''' if not noside else ''])}
 
 [CommandListBars]
 x87 = $size_x
@@ -431,7 +436,7 @@ z87 = $off_x-$icon_size
 w87 = $bar{i+1}_yo * $size_y + $off_y - ($icon_size/2)
 ps-t100 = ResourceSliderIcon{i+1}
 run = CustomShaderSliderMenu
-''' if not ns else '') for i in range(numberoffiles)
+''' if not noside else '') for i in range(numberoffiles)
 ])}
 [CommandListMenu]
 local $v = 0
@@ -500,7 +505,7 @@ $slider_id = 0
     GenerateShaderFiles()
     GenerateTextureFiles()
     for i in range(numberoffiles):
-        if not ns:
+        if not noside:
             GenerateIconFiles(i+1)
         if text:
             GenerateTextFiles(i+1)
