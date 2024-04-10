@@ -221,7 +221,13 @@ run = CustomShaderKeys
 [CustomShaderKeys]
 ;**** SHAPE KEY SHADER ****
 ;Contributors: Cybertron, SinsOfSeven, DiXiao
+vs = null
+hs = null
+ds = null
+gs = null
+ps = null
 cs = resources/ShapeKey.hlsl
+run = BuiltInCommandListUnbindAllRenderTargets
 dispatch = {verts}, 1, 1
 [Resource{charaname}Position]
 [Resource{charaname}PositionBase]
@@ -416,6 +422,7 @@ if $slider_id == {i+1}
 else
     ps-t100 = ResourceSliderUI
 endif
+$slider_id = 0
 run = CustomShaderSliderMenu
 '''
 +(f''';DRAW ICON
