@@ -305,8 +305,7 @@ filename = resources/Icon{i+1}.dds
 '''if not ns else '')+(f'''[ResourceSliderText{i+1}]
 filename = resources/textResource{i+1}.dds
 ''' if text else '')
-for i in range(numberoffiles)
-])}
+for i in range(numberoffiles)])}
 [CustomShaderSliderMenu]
 vs = resources/UIElement.hlsl
 ps = resources/UIElement.hlsl
@@ -329,18 +328,17 @@ x87 = $text_x*2.5
 y87 = $text_y*2.5
 z87 = $off_x+$size_x/2-($text_x*2.5)/2
 ps-t100 = ResourceSlidersTitle
-run = CustomShaderSliderMenu'''
-if title else ''])}
-{''.join([
+run = CustomShaderSliderMenu
 '''
-x87 = $text_x
+if title else ''])}{''.join([
+'''x87 = $text_x
 y87 = $text_y
 z87 = $off_x+$size_x-$text_x
 w87 = $off_y+$size_y-$text_y
 ps-t100 = ResourceSlidersAuthor
-run = CustomShaderSliderMenu'''
+run = CustomShaderSliderMenu
+'''
 if author else ''])}
-
 ps-t100 = ResourceBorderUI
 x87 = 0.001
 y87 = $size_y
@@ -363,7 +361,8 @@ z87 = $off_x
 w87 = $off_y+$size_y
 run = CustomShaderSliderMenu
 
-{''.join(['''x87 = $icon_size
+{''.join([
+'''x87 = $icon_size
 y87 = $size_y
 z87 = $off_x-$icon_size
 w87 = $off_y
@@ -392,15 +391,16 @@ y87 = $bar
 z87 = $off_x
 ps-t100 = ResourceBarsUI
 run = CustomShaderSliderMenu
-
-{''.join([f''';Draws Linerules on sliders
+{''.join([
+f''';Draws Linerules on sliders
 ps-t100 = ResourceBarsSmallUI
 x87 = 0.0015
 y87 = $bar
-{''.join([f'z87 = $off_x+($size_x/10)*{i}-(x87/2)
-run = CustomShaderSliderMenu
-'for i in range(1,10)])}
-''' if metric else ''])}
+''' if metric else ''
+])}{''.join([
+f'''z87 = $off_x+($size_x/10)*{i}-(x87/2)
+run = CustomShaderSliderMenu''' for i in range(1,10)] if metric else ''
+)}
 
 {''.join([
 f'''
