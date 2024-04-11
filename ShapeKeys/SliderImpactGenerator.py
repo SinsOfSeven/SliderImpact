@@ -1,3 +1,11 @@
+"""
+This python script was created by Cybertron, Nurarihyon, and SinsOfSeven
+It aims to make shapekey like behavior using position information, currently the process is quite trial and error.
+
+Run this script inside the folder containing the PositionBuffers and Mod ini you wish to apply the slider generator to.
+
+"""
+
 import os
 import glob
 import base64
