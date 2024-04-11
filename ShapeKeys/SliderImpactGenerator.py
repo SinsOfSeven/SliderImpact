@@ -411,13 +411,14 @@ z87 = $off_x
 ps-t100 = ResourceBarsUI
 run = CustomShaderSliderMenu
 {''.join([
-f''';Draws increments on sliders
+f'''
+;Draws increments on sliders
 ps-t100 = ResourceBarsSmallUI
 x87 = 0.0015
-y87 = $bar
-''' if metric else ''
+y87 = $bar''' if metric else ''
 ])}{''.join([
-f'''z87 = $off_x+($size_x/10)*{i}-(x87/2)
+f'''
+z87 = $off_x+($size_x/10)*{i}-(x87/2)
 run = CustomShaderSliderMenu''' for i in range(1,10)] if metric else ''
 )}
 
@@ -450,6 +451,20 @@ run = CustomShaderSliderMenu
 local $v = 0
 
 if $menu == 1
+    ; Is the menu being dragged?
+    local $drag
+    if $click && cursor_x > $off_x && cursor_x < $off_x + $size_x && cursor_y > $off_y-$size_y/20 && cursor_y < $off_y+$size_y/10
+        $drag = 1
+    endif
+    if !$click && $drag
+        $drag = 0
+    elif $drag
+        ;offset menu
+        $off_x = cursor_x-$size_x/2
+        $off_y = cursor_y-$size_y/40
+    endif
+
+    ; Draw Menu
     run = CommandListBackdrop
 {''.join([
 f'''    
@@ -469,11 +484,6 @@ f'''
     )
 for i in range(numberoffiles)
 ])}
-    if cursor_x > $off_x && cursor_x < $off_x + $size_x && cursor_y > $off_y-$size_y/20 && cursor_y < $off_y+$size_y/10 && $click
-        $off_x = cursor_x-$size_x/2
-        $off_y = cursor_y-$size_y/40
-    endif
-    
     if $selector || cursor_x > $off_x && cursor_x < $off_x + $size_x
 {''.join([
 f'''        if $selector == {i+1} || cursor_y > $bar{i+1}_yo * $size_y + $off_y && cursor_y < $bar{i+1}_yo * $size_y + $bar + $off_y
