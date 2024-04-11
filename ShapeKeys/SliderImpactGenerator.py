@@ -4,6 +4,14 @@ import base64
 import argparse
 
 def get_user_order(posbuffers):
+    # Get User defined order of sliders.
+    print("---Select Slider Order---")
+    print("Select the order of the sliders by listing them like so '1 0 2'")
+    print("Omitting an option will prevent it from generating.")
+    print("Press Enter to keep default order.")
+    for i, posbuffer in enumerate(posbuffers):
+            print(f"\t{i}:  {posbuffer}")
+    print("\nEnter selection:")
 
     choice = input()
 
@@ -12,20 +20,20 @@ def get_user_order(posbuffers):
         choice = choice.strip().split(" ")
 
         if len(choice) > len(posbuffers):
-            print("\nERROR: please only enter up to the number of the original mods\n")
+            print("\nERROR: too many selections\n")
             choice = input()
         else:
             try:
                 result = []
                 choice = [int(x) for x in choice]
                 if len(set(choice)) != len(choice):
-                    print("\nERROR: please enter each mod number at most once\n")
+                    print("\nERROR: do not repeat selections\n")
                     choice = input()
                 elif max(choice) >= len(posbuffers):
-                    print("\nERROR: selected index is greater than the largest available\n")
+                    print("\nERROR: selection is invalid\n")
                     choice = input()
                 elif min(choice) < 0:
-                    print("\nERROR: selected index is less than 0\n")
+                    print("\nERROR: selection is invalid\n")
                     choice = input()
                     print()
                 else:
@@ -33,34 +41,29 @@ def get_user_order(posbuffers):
                         result.append(posbuffers[x])
                     return result
             except ValueError:
-                print("\nERROR: please only enter the index of the mods you want to merge separated by spaces (example: 3 0 1 2)\n")
+                print("\nERROR: select order by index separated by spaces (example: 3 0 1 2)\n")
                 choice = input()
 
-    # User didn't enter anything and just pressed enter
     return posbuffers
 
 def main():
-    parser = argparse.ArgumentParser(description="Generates a ShapeKey(s) Slider(s)")
-    parser.add_argument("-t", "--test", action="store_true", help="Test Argument")
-    parser.add_argument("-s","--slider", default=[0.15, 0.5, 0.8, 0.05], action="store", nargs=4, type=float, help="x_size y_size x_offset y_offset")
-    parser.add_argument("-scale", "--scale", default=1, type=float, help="Scale value, default is 1")
-    parser.add_argument("-text", "--text", action="store_true", help="Generate text files (These are images that you can then modify)")
-    parser.add_argument("-title", "--title", action="store_true", help="Generate text file for title")
-    parser.add_argument("-a", "--author", action="store_true", help="Generate text file for author")
-    parser.add_argument("-o", "--order", action="store_true", help="Custom Order for Sliders (1 0 2)")
+    parser = argparse.ArgumentParser(description=f'{'='*20} ShapeKey Slider Script Help {'='*20}')
+    parser.add_argument("-a", "--author", action="store_true", help="Generate placeholder text images for author")
+    parser.add_argument("-o", "--order", action="store_true", help="Rearrage slider order (Prompt).")
     parser.add_argument("-ns", "--noside", action="store_true", help="Disables sidebar")
-    parser.add_argument("-nb", "--noborder", action="store_true", help="Disables boader")
-    parser.add_argument("-cm","--metric", action="store_true", help="Adds red measurement lines")
+    parser.add_argument("-nb", "--noborder", action="store_true", help="Disables border")
+    parser.add_argument("-cm", "--metric", action="store_true", help="Adds incremental measurements to the bars.")
+    parser.add_argument("--size", metavar='n', default=[0.15, 0.5, 0.8, 0.05], action="store", nargs=4, type=float, help="UI (0,1): x y size, x y position")
+    parser.add_argument("--scale", default=1, type=float, help="Slider Multiplier, default is 1")
+    parser.add_argument("--text", action="store_true", help="Generate placeholder text images for sliders.")
+    parser.add_argument("--title", action="store_true", help="Generate placeholder text images for title")
 
     args = parser.parse_args()
 
-    if args.test:
-        print("test")
-
-    x_size = args.slider[0]
-    y_size = args.slider[1]
-    x_offset = args.slider[2]
-    y_offset = args.slider[3]
+    x_size = args.size[0]
+    y_size = args.size[1]
+    x_offset = args.size[2]
+    y_offset = args.size[3]
     scale = args.scale
     text=args.text
     title = args.title
@@ -90,7 +93,7 @@ def main():
             print('Multiple enabled mods')
             return
         charaname = file[:-4]
-        print('character: '+charaname)
+        print('\nCharacter: '+charaname)
     except FileExistsError:
         print('No enabled mod')
 
@@ -101,23 +104,14 @@ def main():
     posbuffers = [filename for filename in os.listdir(folder_path) if filename.lower().startswith(f'{charaname}Position'.lower())
             and "base" not in filename.lower() 
             and not filename.lower().startswith(f'{charaname}Position.'.lower())]
+ 
+    if args.order and len(posbuffers) >= 2:
+        posbuffers = get_user_order(posbuffers)
 
     numberoffiles = len(posbuffers)
 
-    if args.order and numberoffiles >= 2:
-        for i, posbuffer in enumerate(posbuffers):
-            print(f"\t{i}:  {posbuffer}")
-
-        print("\nThis Script will add Sliders using the order listed above (0 is the default the Mod will start with, and it will cycle 0,1,2...)")
-        print("If this is fine, please press ENTER. If not, please enter the order you want the script to merge the mods (example: 1 0 2)")
-        print("If you enter less than the total number, this Script will only add Sliders to those listed.\n")
-        posbuffers = get_user_order(posbuffers)
-        numberoffiles = len(posbuffers)
-
-
     print(numberoffiles, charaname, posbuffers, baseposition)
     # Read the contents of the file
-
     with open(file) as file:
         lines = file.readlines()
 
@@ -130,7 +124,7 @@ def main():
         if (line == "[Present]"):
             itexists = True
         if ("draw = " in line):
-            print(line[6:].split(',').pop(0))
+            #print(line[6:].split(',').pop(0))
             verts = line[6:].split(',').pop(0)
         if("GENERATED SLIDERIMPACT" in line):
             modified=True
@@ -138,33 +132,35 @@ def main():
             modified_lines.append(line.strip('\n'))  # Example modification: converting text to uppercase
     skip = False
     # Write the modified contents back to the file
-    with open(f'{charaname}.ini', "w") as file:
-        wait = False
-        textureoverrideposition = 9999999
-        for i, line in enumerate(modified_lines):
+    print(f"Updating {charaname}.ini")
+    try:
+        with open(f'{charaname}.ini', "w") as file:
             wait = False
+            textureoverrideposition = 9999999
+            for i, line in enumerate(modified_lines):
+                wait = False
 
-            if line == f'[TextureOverride{charaname}Position]':
-                textureoverrideposition = i+3
+                if line == f'[TextureOverride{charaname}Position]':
+                    textureoverrideposition = i+3
 
-            if i == textureoverrideposition and line != '$activeForMenu = 1':
-                file.write('$activeForMenu = 1\n')
+                if i == textureoverrideposition and line != '$activeForMenu = 1':
+                    file.write('$activeForMenu = 1\n')
 
-            if (f'[Resource{charaname}Position]' in line):
-                skip = True
-                linesskipped = 0
+                if (f'[Resource{charaname}Position]' in line):
+                    skip = True
+                    linesskipped = 0
 
-            if (skip):
-                linesskipped += 1
-                if (linesskipped == 5):
-                    skip = False
-                else:
-                    continue
+                if (skip):
+                    linesskipped += 1
+                    if (linesskipped == 5):
+                        skip = False
+                    else:
+                        continue
 
-            file.write(line+"\n")
+                file.write(line+"\n")
 
-        print(modified)
-        file.write(
+            
+            file.write(
 f"""; #GENERATED SLIDERIMPACT
 
 [Constants]
@@ -305,15 +301,19 @@ filename = resources/textResourceTitle.dds''' if title else ''])}
 filename = resources/textResourceAuthor.dds''' if author else ''])}
 [ResourceBackgroundUI]
 filename = resources/background.dds
-
-{''.join([ 
-('''[ResourceBorderUI]
-filename = resources/border.dds'''if not noborder else '')+
-(f'''[ResourceSliderIcon{i+1}]
+{''.join('''[ResourceBorderUI]
+filename = resources/border.dds
+'''if not noborder or not noside else ''
+)}
+{''.join([(
+f'''[ResourceSliderIcon{i+1}]
 filename = resources/Icon{i+1}.dds
-'''if not noside else '')+(f'''[ResourceSliderText{i+1}]
+'''if not noside else ''
+)+(
+f'''[ResourceSliderText{i+1}]
 filename = resources/textResource{i+1}.dds
-''' if text else '')
+''' if text else ''
+)
 for i in range(numberoffiles)])}
 [CustomShaderSliderMenu]
 vs = resources/UIElement.hlsl
@@ -368,24 +368,23 @@ x87 = $size_x
 y87 = 0.002
 z87 = $off_x
 w87 = $off_y+$size_y
-run = CustomShaderSliderMenu''' if noborder else '')
-])}
-
-
+run = CustomShaderSliderMenu''' if not noborder else ''
+)])}
 {''.join([
-'''x87 = $icon_size
+('''x87 = $icon_size
 y87 = $size_y
 z87 = $off_x-$icon_size
 w87 = $off_y
 ps-t100 = ResourceBackgroundUI
 run = CustomShaderSliderMenu
-ps-t100 = ResourceBorderUI
+''' if not (noborder or noside) else ''
+)+(
+'''ps-t100 = ResourceBorderUI
 x87 = $icon_size
 y87 = 0.002
 z87 = $off_x-$icon_size
 w87 = $off_y
 run = CustomShaderSliderMenu
-x87 = $icon_size
 y87 = 0.002
 z87 = $off_x-$icon_size
 w87 = $off_y+$size_y
@@ -394,7 +393,8 @@ x87 = 0.001
 y87 = $size_y
 z87 = $off_x-$icon_size
 w87 = $off_y
-run = CustomShaderSliderMenu''' if not noside else ''])}
+run = CustomShaderSliderMenu
+''' if not (noborder or noside) else '')])}
 
 [CommandListBars]
 x87 = $size_x
@@ -403,7 +403,7 @@ z87 = $off_x
 ps-t100 = ResourceBarsUI
 run = CustomShaderSliderMenu
 {''.join([
-f''';Draws Linerules on sliders
+f''';Draws increments on sliders
 ps-t100 = ResourceBarsSmallUI
 x87 = 0.0015
 y87 = $bar
@@ -494,7 +494,9 @@ endif
 $slider_id = 0
 ;###MENU CODE END
 """)
-        
+
+    except:
+        print(f'Failed to update {charaname}.ini')
     if not os.path.exists('./resources'):
     # Create directory if it doesn't exist
         try:
