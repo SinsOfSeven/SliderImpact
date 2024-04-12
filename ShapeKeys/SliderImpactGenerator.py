@@ -55,7 +55,7 @@ def get_user_order(posbuffers):
     return posbuffers
 
 def main():
-    parser = argparse.ArgumentParser(description=f'{'='*20} ShapeKey Slider Script Help {'='*20}')
+    parser = argparse.ArgumentParser(description=f"{'='*20} ShapeKey Slider Script Help {'='*20}")
     parser.add_argument("-a", "--author", action="store_true", help="Generate placeholder text images for author")
     parser.add_argument("-o", "--order", action="store_true", help="Rearrage slider order (Prompt).")
     parser.add_argument("-ns", "--noside", action="store_true", help="Disables sidebar")
