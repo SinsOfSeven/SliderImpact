@@ -53,10 +53,10 @@ Texture2D<float4> tex : register(t100);
 
 void main(vs2ps input, out float4 result : SV_Target0)
 {
-	uint width, height;
-	tex.GetDimensions(width, height);
-	if (!width || !height) discard;
+	float2 dims;
+	tex.GetDimensions(dims.x, dims.y);
+	if (!dims.x || !dims.y) discard;
 	input.uv.y = 1 - input.uv.y;
-	result = tex.Load(int3(input.uv.xy * float2(width, height), 0));
+	result = tex.Load(int3(input.uv.xy*dims.xy, 0));
 }
 #endif
