@@ -1,4 +1,5 @@
 """
+// Thank you Zlevir for all the heavy lifting.
 This python script was created by Cybertron, Nurarihyon, and SinsOfSeven
 It aims to make shapekey like behavior using position information, currently the process is quite trial and error.
 

@@ -1,4 +1,5 @@
 // **** RESPONSIVE UI SHADER ****
+// Thank you Zlevir for all the heavy lifting.
 // Contributors: SinsOfSeven
 // Ispired by VV_Mod_Maker
 
