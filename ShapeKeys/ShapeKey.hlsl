@@ -15,6 +15,26 @@ StructuredBuffer<VertexAttributes> shapekey : register(t51);
 Texture1D<float4> IniParams : register(t120);
 #define key IniParams[88].x
 
+float3 RotateVector(float3 p, float3 a, float3 o)
+{ //Thanky DiXiao and Silent
+  // position, angles, axis offset.
+    p = p - o;
+    float3x3 rotationMatrix = float3x3(
+        cos(a.y) * cos(a.z), 
+        sin(a.x) * sin(a.y) * cos(a.z) - cos(a.x) * sin(a.z), 
+        cos(a.x) * sin(a.y) * cos(a.z) + sin(a.x) * sin(a.z),
+
+        cos(a.y) * sin(a.z), 
+        sin(a.x) * sin(a.y) * sin(a.z) + cos(a.x) * cos(a.z), 
+        cos(a.x) * sin(a.y) * sin(a.z) - sin(a.x) * cos(a.z),
+
+        -sin(a.y), 
+        sin(a.x) * cos(a.y), 
+        cos(a.x) * cos(a.y)
+    );
+    return mul(p, rotationMatrix)+o;
+}
+
 [numthreads(1, 1, 1)]
 void main(uint3 threadID : SV_DispatchThreadID)
 {

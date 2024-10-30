@@ -8,8 +8,8 @@ RWTexture2D<float4> tex : register(u5);
 Texture1D<float4> IniParams : register(t120);
 #define color IniParams[87].xyzw
 
-[numthreads(1, 4, 4)]
+[numthreads(32, 32, 1)]
 void main(uint3 threadID : SV_DispatchThreadID)
 {
-    tex[threadID.yz] = color;
+    tex[threadID.xy] = color;
 }
